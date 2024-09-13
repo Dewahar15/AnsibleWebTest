@@ -1,8 +1,35 @@
 - hosts: localhost
+  vars:
+    - CreaterName: "Admin"
+    - packageName: "httpd"
+    - webpagedir: "/var/www/newhtml"
+
   tasks:
-    - name: package installing
-      package: " name=httpd state=present"
-    - name: file copyin
-      copy: "src=index.html dest=/var/www/html "
+    - name: msg from debug
+      debug:
+        msg: " Hai this is Ansible {{ CreaterName }}
+               We Creating Sample Web Page"
+    - name: package
+      package:
+        name: " {{ packageName }}"
+        state: present
+
+    - name: creating new config file
+      file:
+        state: directory
+        path: " {{webpagedir}}"
+
+    - name: copying
+      copy:
+        src: "index.html"
+        dest: "{{webpagedir}}"
+    - name: changing config file settings
+      copy:
+        dest: "/etc/httpd/conf.d/my.conf"
+        content: "documentroot {{webpagedir}}"
     - name: service starting
-      service: " name=httpd state=started"
+      service:
+        name: "httpd"
+        state: reloaded
+        enabled: true
+
