@@ -1,10 +1,14 @@
 - hosts: localhost
-  vars:
-    - CreaterName: "Admin"
-    - packageName: "httpd"
-    - webpagedir: "/var/www/newhtml"
-
+  vars_files:
+    - var.yml
   tasks:
+    - name: geting the system ip_address
+      debug:
+        var: ansible_default_ipv4['address']
+    - name: checking memory space
+      debug:
+        var: ansible_memfree_mb
+
     - name: msg from debug
       debug:
         msg: " Hai this is Ansible {{ CreaterName }}
@@ -13,6 +17,7 @@
       package:
         name: " {{ packageName }}"
         state: present
+      when: "{{ CanCreate }}"
 
     - name: creating new config file
       file:
@@ -32,4 +37,3 @@
         name: "httpd"
         state: reloaded
         enabled: true
-

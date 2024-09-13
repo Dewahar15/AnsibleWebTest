@@ -1,0 +1,6 @@
+CreaterName: "Admin"
+packageName: "httpd"
+webpagedir: "/var/www/newhtml"
+dosetup: true
+CanCreate: ((ansible_os_family == "RedHat") and (ansible_memfree_mb >=  150 )) and dosetup
+
